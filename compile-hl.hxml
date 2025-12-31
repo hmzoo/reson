@@ -1,0 +1,6 @@
+-cp .
+-lib heaps
+-lib hlsdl
+-main Main
+-hl bin/app.hl
+-D windowSize=800x800

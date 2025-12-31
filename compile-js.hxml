@@ -1,0 +1,5 @@
+-cp .
+-lib heaps
+-main Main
+-js bin/app.js
+-D windowSize=800x800
