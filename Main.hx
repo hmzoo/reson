@@ -165,6 +165,134 @@ class Main extends hxd.App {
         instructions.textColor = 0x666666;
         instructions.x = 250;
         instructions.y = 710;
+        
+        // === BOUTONS DE CONFIGURATION ===
+        var configTitle = new h2d.Text(font, s2d);
+        configTitle.text = "Configurations prédéfinies:";
+        configTitle.textColor = 0x000000;
+        configTitle.x = 500;
+        configTitle.y = 80;
+        configTitle.scale(1.2);
+        
+        // Config 1: Résonance par couplage
+        createConfigButton(s2d, font, 500, 120, "Battements", function() {
+            mass1 = 1.0;
+            stiffness1 = 100.0;
+            mass2 = 1.0;
+            stiffness2 = 100.0;
+            mass1Slider.setValue(mass1);
+            stiffness1Slider.setValue(stiffness1);
+            mass2Slider.setValue(mass2);
+            stiffness2Slider.setValue(stiffness2);
+            position1 = equilibriumPosition1 + 50;
+            velocity1 = 0.0;
+            position2 = position1 + equilibriumLength2;
+            velocity2 = 0.0;
+            historyPos1 = [];
+            historyPos2 = [];
+        });
+        
+        // Config 2: Modes propres distincts
+        createConfigButton(s2d, font, 500, 180, "Modes distincts", function() {
+            mass1 = 2.0;
+            stiffness1 = 200.0;
+            mass2 = 1.0;
+            stiffness2 = 50.0;
+            mass1Slider.setValue(mass1);
+            stiffness1Slider.setValue(stiffness1);
+            mass2Slider.setValue(mass2);
+            stiffness2Slider.setValue(stiffness2);
+            position1 = equilibriumPosition1 + 50;
+            velocity1 = 0.0;
+            position2 = position1 + equilibriumLength2;
+            velocity2 = 0.0;
+            historyPos1 = [];
+            historyPos2 = [];
+        });
+        
+        // Config 3: Résonance 2:1
+        createConfigButton(s2d, font, 500, 240, "Harmonique 2:1", function() {
+            mass1 = 1.0;
+            stiffness1 = 100.0;
+            mass2 = 0.25;
+            stiffness2 = 100.0;
+            mass1Slider.setValue(mass1);
+            stiffness1Slider.setValue(stiffness1);
+            mass2Slider.setValue(mass2);
+            stiffness2Slider.setValue(stiffness2);
+            position1 = equilibriumPosition1 + 50;
+            velocity1 = 0.0;
+            position2 = position1 + equilibriumLength2;
+            velocity2 = 0.0;
+            historyPos1 = [];
+            historyPos2 = [];
+        });
+        
+        // Config 4: Couplage faible
+        createConfigButton(s2d, font, 500, 300, "Couplage faible", function() {
+            mass1 = 1.0;
+            stiffness1 = 200.0;
+            mass2 = 1.0;
+            stiffness2 = 20.0;
+            mass1Slider.setValue(mass1);
+            stiffness1Slider.setValue(stiffness1);
+            mass2Slider.setValue(mass2);
+            stiffness2Slider.setValue(stiffness2);
+            position1 = equilibriumPosition1 + 50;
+            velocity1 = 0.0;
+            position2 = position1 + equilibriumLength2;
+            velocity2 = 0.0;
+            historyPos1 = [];
+            historyPos2 = [];
+        });
+        
+        // Config 5: Pendule inversé
+        createConfigButton(s2d, font, 500, 360, "Pendule inversé", function() {
+            mass1 = 0.5;
+            stiffness1 = 50.0;
+            mass2 = 2.0;
+            stiffness2 = 150.0;
+            mass1Slider.setValue(mass1);
+            stiffness1Slider.setValue(stiffness1);
+            mass2Slider.setValue(mass2);
+            stiffness2Slider.setValue(stiffness2);
+            position1 = equilibriumPosition1 + 50;
+            velocity1 = 0.0;
+            position2 = position1 + equilibriumLength2;
+            velocity2 = 0.0;
+            historyPos1 = [];
+            historyPos2 = [];
+        });
+    }
+    
+    function createConfigButton(parent:h2d.Object, font:h2d.Font, x:Float, y:Float, label:String, onClick:Void->Void) {
+        var buttonBg = new h2d.Graphics(parent);
+        buttonBg.beginFill(0x2196F3);
+        buttonBg.drawRoundedRect(x, y, 200, 40, 5);
+        buttonBg.endFill();
+        
+        var button = new h2d.Interactive(200, 40, parent);
+        button.x = x;
+        button.y = y;
+        button.onClick = function(_) onClick();
+        button.onOver = function(_) {
+            buttonBg.clear();
+            buttonBg.beginFill(0x1976D2);
+            buttonBg.drawRoundedRect(x, y, 200, 40, 5);
+            buttonBg.endFill();
+        };
+        button.onOut = function(_) {
+            buttonBg.clear();
+            buttonBg.beginFill(0x2196F3);
+            buttonBg.drawRoundedRect(x, y, 200, 40, 5);
+            buttonBg.endFill();
+        };
+        
+        var buttonText = new h2d.Text(font, parent);
+        buttonText.text = label;
+        buttonText.textColor = 0xFFFFFF;
+        buttonText.x = x + 10;
+        buttonText.y = y + 10;
     }
     
     override function update(dt:Float) {
@@ -506,5 +634,10 @@ class Slider {
     
     public function getValue():Float {
         return value;
+    }
+    
+    public function setValue(newValue:Float):Void {
+        value = Math.max(min, Math.min(max, newValue));
+        draw();
     }
 }
